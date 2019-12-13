@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftNotifier.Lib", "MinecraftNotifier.lib\MinecraftNotifier.Lib.csproj", "{640CD68A-207B-4933-BA31-C9E2C7482405}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftNotifier.Cons", "MinecraftNotifier.Cons\MinecraftNotifier.Cons.csproj", "{2F1DEF21-F091-4CCD-8F7B-C5A0C2B3EA50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{795E7F69-D942-44F0-BA1A-4D45AE44A645}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{640CD68A-207B-4933-BA31-C9E2C7482405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{640CD68A-207B-4933-BA31-C9E2C7482405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{640CD68A-207B-4933-BA31-C9E2C7482405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{640CD68A-207B-4933-BA31-C9E2C7482405}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F1DEF21-F091-4CCD-8F7B-C5A0C2B3EA50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F1DEF21-F091-4CCD-8F7B-C5A0C2B3EA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F1DEF21-F091-4CCD-8F7B-C5A0C2B3EA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F1DEF21-F091-4CCD-8F7B-C5A0C2B3EA50}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58DD13AF-F7FC-4C28-B38E-FD239BAB3383}
+	EndGlobalSection
+EndGlobal
