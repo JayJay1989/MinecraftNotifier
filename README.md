@@ -3,8 +3,9 @@
 </p>
 
 <p align="center">
-	<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/.NET%20Core-3.0-orange.svg" style="max-height: 300px;"></a>
+	<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/.NET%20standard-2.0-orange.svg" style="max-height: 300px;"></a>
 	<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/Platform-.NET-lightgrey.svg" style="max-height: 300px;" alt="Platform: .net"></a>
+	<a href="https://www.nuget.org/packages/MinecraftNotifier/"><img src="https://buildstats.info/nuget/MinecraftNotifier"></a>
 </p>
 
 ## About
