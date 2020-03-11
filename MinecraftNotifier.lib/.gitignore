@@ -1,0 +1,6 @@
+html
+*.nupkg
+*.nuspec
+nuget.exe
+build.cmd
+Doxyfile
