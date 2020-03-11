@@ -338,3 +338,8 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+MinecraftNotifier.lib/build.cmd
+
+MinecraftNotifier.lib/MinecraftNotifier.Lib.nuspec
+
+MinecraftNotifier.lib/nuget.exe
