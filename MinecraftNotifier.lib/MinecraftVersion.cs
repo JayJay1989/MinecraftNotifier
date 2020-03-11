@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using MinecraftNotifier.Lib.Core;
 using MinecraftNotifier.Lib.Events;
 using MinecraftNotifier.Lib.Models;
+using Timer = System.Timers.Timer;
 
 namespace MinecraftNotifier.Lib
 {
     public class MinecraftVersion
     {
-        private Timer timer = new Timer();
+        private Timer _timer = new Timer();
         private int _interval = 60000;
-        private WebRequest request;
-        private string latestStable;
-        private string latestSnapshot;
-        private string latestVersion;
+        private WebRequest _request;
+        private string _latestStable;
+        private string _latestSnapshot;
+        private string _latestVersion;
+        private int _timespan = 1;
 
         #region Events
 
@@ -37,9 +41,9 @@ namespace MinecraftNotifier.Lib
         /// </summary>
         public void Start()
         {
-            timer.Interval = _interval;
-            timer.Elapsed += TimerTickMethod;
-            timer.Start();
+            _timer.Elapsed += TimerTickMethod;
+            _timer.Start();
+            _timer.Interval = _interval;
         }
 
         /// <summary>
@@ -47,7 +51,7 @@ namespace MinecraftNotifier.Lib
         /// </summary>
         public void Stop()
         {
-            timer.Stop();
+            _timer.Stop();
         }
 
         /// <summary>
@@ -60,12 +64,23 @@ namespace MinecraftNotifier.Lib
         }
 
         /// <summary>
+        /// Set the timespan to search for new updates
+        /// </summary>
+        /// <param name="timespan">timespan in days</param>
+        public void Timespan(int timespan)
+        {
+            _timespan = timespan;
+        }
+
+        /// <summary>
         /// Get the latest request
         /// </summary>
         /// <returns>The latest data</returns>
-        public MinecraftJson LastResult()
+        public async Task<MinecraftJson> LastResult()
         {
-            return request.GetResult();
+
+            MinecraftJson result = await _request.DeserializeStreamAsync(CancellationToken.None);
+            return result;
         }
         
         /// <summary>
@@ -73,37 +88,37 @@ namespace MinecraftNotifier.Lib
         /// </summary>
         /// <param name="sender">the sender</param>
         /// <param name="e">event arguments</param>
-        private void TimerTickMethod(object sender, ElapsedEventArgs e)
+        private async void TimerTickMethod(object sender, ElapsedEventArgs e)
         {
             DateTime now = DateTime.Now;
-            request = new WebRequest();
-            MinecraftJson requestData = request.GetResult();
+            _request = new WebRequest();
+            MinecraftJson requestData = await _request.DeserializeStreamAsync(CancellationToken.None);
 
-            if (requestData.GetLatest().ReleaseTime.AddDays(1) > now.ToLocalTime() && latestVersion != requestData.GetLatest().Id)
+            if (requestData.GetLatest().ReleaseTime.AddDays(_timespan) > now.ToLocalTime() && _latestVersion != requestData.GetLatest().Id)
             {
                 onNewMinecraftVersionHandler?.Invoke(this, new OnNewMinecraftVersionArgs()
                 {
                     MCVersion = requestData.GetLatest()
                 });
-                latestVersion = requestData.GetLatest().Id;
+                _latestVersion = requestData.GetLatest().Id;
             }
 
-            if (requestData.GetLatestSnapshot().ReleaseTime.AddDays(1) > now.ToLocalTime() && latestSnapshot != requestData.GetLatestSnapshot().Id)
+            if (requestData.GetLatestSnapshot().ReleaseTime.AddDays(_timespan) > now.ToLocalTime() && _latestSnapshot != requestData.GetLatestSnapshot().Id)
             {
                 onNewSnapshotReleaseHandler?.Invoke(this, new OnNewSnapshotReleaseArgs()
                 {
                     MCVersion = requestData.GetLatestSnapshot()
                 });
-                latestSnapshot = requestData.GetLatestSnapshot().Id;
+                _latestSnapshot = requestData.GetLatestSnapshot().Id;
             }
 
-            if (requestData.GetLatestStable().ReleaseTime.AddDays(1) > now.ToLocalTime() && latestStable != requestData.GetLatestStable().Id)
+            if (requestData.GetLatestStable().ReleaseTime.AddDays(_timespan) > now.ToLocalTime() && _latestStable != requestData.GetLatestStable().Id)
             {
                 onNewStableReleaseHandler?.Invoke(this, new OnNewStableReleaseArgs()
                 {
                     MCVersion = requestData.GetLatestStable()
                 });
-                latestStable = requestData.GetLatestStable().Id;
+                _latestStable = requestData.GetLatestStable().Id;
             }
         }
     }

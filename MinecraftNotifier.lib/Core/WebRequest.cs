@@ -1,6 +1,10 @@
-﻿using System;
-using System.Net;
+﻿using System.IO;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using MinecraftNotifier.Lib.Exceptions;
 using MinecraftNotifier.Lib.Models;
+using Newtonsoft.Json;
 
 namespace MinecraftNotifier.Lib.Core
 {
@@ -10,40 +14,64 @@ namespace MinecraftNotifier.Lib.Core
     public class WebRequest
     {
         /// <summary>
-        /// Data
+        /// Deserialize Json From Stream
         /// </summary>
-        private MinecraftJson _manifest;
-
-        /// <summary>
-        /// Constructor for creating a web request
-        /// </summary>
-        public WebRequest()
+        /// <typeparam name="T">the type</typeparam>
+        /// <param name="stream">the stream</param>
+        /// <returns>the type</returns>
+        private T DeserializeJsonFromStream<T>(Stream stream)
         {
-            using (WebClient client = new WebClient() { Encoding = System.Text.Encoding.UTF8 })
-            {
-                string s = null;
-                try
-                {
-                    s = client.DownloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-                if (s == null) return;
+            if (stream == null || stream.CanRead == false)
+                return default(T);
 
-                this._manifest = MinecraftJson.FromJson(s);
+            using (var sr = new StreamReader(stream))
+            using (var jtr = new JsonTextReader(sr))
+            {
+                var js = new JsonSerializer();
+                var searchResult = js.Deserialize<T>(jtr);
+                return searchResult;
             }
         }
 
         /// <summary>
-        /// Get the result
+        /// Stream to string
         /// </summary>
-        /// <returns>The result</returns>
-        public MinecraftJson GetResult()
+        /// <param name="stream">the Stream</param>
+        /// <returns>String</returns>
+        private async Task<string> StreamToStringAsync(Stream stream)
         {
-            return this._manifest;
+            string content = null;
+
+            if (stream != null)
+                using (var sr = new StreamReader(stream))
+                    content = await sr.ReadToEndAsync();
+
+            return content;
         }
 
+        /// <summary>
+        /// Deserialize Stream
+        /// </summary>
+        /// <param name="cancellationToken">the cancellation token</param>
+        /// <returns>Taskresult for MinecraftJson</returns>
+        public async Task<MinecraftJson> DeserializeStreamAsync(CancellationToken cancellationToken)
+        {
+            using (var client = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Get, "https://launchermeta.mojang.com/mc/game/version_manifest.json"))
+            using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+
+                if (response.IsSuccessStatusCode)
+                    return DeserializeJsonFromStream<MinecraftJson>(stream);
+
+                var content = await StreamToStringAsync(stream);
+                throw new ApiException
+                {
+                    StatusCode = (int)response.StatusCode,
+                    Content = content
+                };
+            }
+        }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace MinecraftNotifier.Lib.Models
 {
@@ -25,7 +23,7 @@ namespace MinecraftNotifier.Lib.Models
         public string Snapshot { get; set; }
     }
 
-    public partial class Version
+    public class Version
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -45,8 +43,6 @@ namespace MinecraftNotifier.Lib.Models
 
     public partial class MinecraftJson
     {
-        public static MinecraftJson FromJson(string json) => JsonConvert.DeserializeObject<MinecraftJson>(json, Converter.Settings);
-
         /// <summary>
         /// Get Version information  by ID
         /// </summary>
@@ -85,23 +81,5 @@ namespace MinecraftNotifier.Lib.Models
             return Versions
                 .Find(version => version.ReleaseTime == Versions.Where(item => item.Type == "release").Max(item => item.ReleaseTime));
         }
-    }
-
-    public static class Serialize
-    {
-        public static string ToJson(this MinecraftJson self) => JsonConvert.SerializeObject(self, Converter.Settings);
-    }
-
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters =
-            {
-                new IsoDateTimeConverter {DateTimeStyles = DateTimeStyles.AssumeUniversal}
-            },
-        };
     }
 }

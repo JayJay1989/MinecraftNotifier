@@ -15,6 +15,7 @@ namespace MinecraftNotifier.Cons
             mcversion.onNewSnapshotReleaseHandler += OnNewSnapshotReleaseHandler;
             mcversion.onNewStableReleaseHandler += OnNewStableReleaseHandler;
             mcversion.SetInterval(5000); //Standard: 60000ms => 60seconds
+            mcversion.Timespan(14); //Standard: 1 => 1 day
             mcversion.Start();
             Console.ReadLine();
         }
