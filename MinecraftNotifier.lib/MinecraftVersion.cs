@@ -9,6 +9,9 @@ using Timer = System.Timers.Timer;
 
 namespace MinecraftNotifier.Lib
 {
+    /// <summary>
+    /// Class representing MinecraftVersion
+    /// </summary>
     public class MinecraftVersion
     {
         private Timer _timer = new Timer();
@@ -24,15 +27,15 @@ namespace MinecraftNotifier.Lib
         /// <summary>
         /// Fires when MinecraftNotifier receives an update of any version type from Mojang
         /// </summary>
-        public EventHandler<OnNewMinecraftVersionArgs> onNewMinecraftVersionHandler;
+        public EventHandler<OnNewMinecraftVersionArgs> OnNewMinecraftVersionHandler;
         /// <summary>
         /// Fires when MinecraftNotifier receives an update on the stable branch from Mojang 
         /// </summary>
-        public EventHandler<OnNewStableReleaseArgs> onNewStableReleaseHandler;
+        public EventHandler<OnNewStableReleaseArgs> OnNewStableReleaseHandler;
         /// <summary>
         /// Fires when MinecraftNotifier receives an update on the snapshot branch from Mojang  
         /// </summary>
-        public EventHandler<OnNewSnapshotReleaseArgs> onNewSnapshotReleaseHandler;
+        public EventHandler<OnNewSnapshotReleaseArgs> OnNewSnapshotReleaseHandler;
 
         #endregion
 
@@ -96,7 +99,7 @@ namespace MinecraftNotifier.Lib
 
             if (requestData.GetLatest().ReleaseTime.AddDays(_timespan) > now.ToLocalTime() && _latestVersion != requestData.GetLatest().Id)
             {
-                onNewMinecraftVersionHandler?.Invoke(this, new OnNewMinecraftVersionArgs()
+                OnNewMinecraftVersionHandler?.Invoke(this, new OnNewMinecraftVersionArgs()
                 {
                     MCVersion = requestData.GetLatest()
                 });
@@ -105,7 +108,7 @@ namespace MinecraftNotifier.Lib
 
             if (requestData.GetLatestSnapshot().ReleaseTime.AddDays(_timespan) > now.ToLocalTime() && _latestSnapshot != requestData.GetLatestSnapshot().Id)
             {
-                onNewSnapshotReleaseHandler?.Invoke(this, new OnNewSnapshotReleaseArgs()
+                OnNewSnapshotReleaseHandler?.Invoke(this, new OnNewSnapshotReleaseArgs()
                 {
                     MCVersion = requestData.GetLatestSnapshot()
                 });
@@ -114,7 +117,7 @@ namespace MinecraftNotifier.Lib
 
             if (requestData.GetLatestStable().ReleaseTime.AddDays(_timespan) > now.ToLocalTime() && _latestStable != requestData.GetLatestStable().Id)
             {
-                onNewStableReleaseHandler?.Invoke(this, new OnNewStableReleaseArgs()
+                OnNewStableReleaseHandler?.Invoke(this, new OnNewStableReleaseArgs()
                 {
                     MCVersion = requestData.GetLatestStable()
                 });
