@@ -17,7 +17,7 @@ MinecraftNotifier is a C# library that allow interaction with Minecraft (Mojang)
 
 ## Documentation
 #### Doxygen
-Coming soon
+For complete library documentation, view the doxygen docs [here](https://lateur.pro/projects/MinecraftNotifier/)
 
 ## Implementing
 #### MinecraftNotifier.Lib.MinecraftVersion - CSharp
