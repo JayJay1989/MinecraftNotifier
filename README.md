@@ -19,7 +19,7 @@ MinecraftNotifier is a C# library that allow interaction with Minecraft (Mojang)
 #### Doxygen
 Coming soon
 
-##Iplementing
+## Implementing
 #### MinecraftNotifier.Lib.MinecraftVersion - CSharp
 ```csharp
 using System;
@@ -39,6 +39,7 @@ namespace MinecraftNotifier.Cons
             mcversion.onNewSnapshotReleaseHandler += OnNewSnapshotReleaseHandler;
             mcversion.onNewStableReleaseHandler += OnNewStableReleaseHandler;
             mcversion.SetInterval(5000); //Standard: 60000ms => 60seconds
+            mcversion.SetTimespan(14); //Standard: 1 => 1 day
             mcversion.Start();
             Console.ReadLine();
         }
